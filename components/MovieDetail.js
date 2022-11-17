@@ -3,7 +3,6 @@ import Chips from "./Chips";
 export default function MovieDetail(props) {
   const { Title, Poster, Year, Genre, Ratings } = props;
   const subTitleList = ["Actors", "Director", "Awards", "Plot"];
-  //const ratingsChipItems = Ratings.map((rating) => rating.Source + ":" + rating.Value);
   return (
     <ScrollView>
       <Image style={styles.img} source={{ uri: Poster != "N/A" ? Poster : null }} />
@@ -21,7 +20,6 @@ export default function MovieDetail(props) {
       ))}
       <View style={styles.subtitleContainer}>
         <Text style={styles.subtitle}>Ratings</Text>
-        {/**<Chips items={ratingsChipItems} direction="column" />**/}
         {Ratings.map((item) => (
           <View key={item.Source} style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
             <Text>{item.Source}</Text>
