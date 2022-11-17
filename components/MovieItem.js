@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, StyleSheet, TouchableOpacity, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 export default function MovieItem({ Title, imdbID, Poster, Type, Year }) {
   const navigation = useNavigation();
   const moviePressHandler = () => {

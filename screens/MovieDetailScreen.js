@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
 import MovieDetail from "../components/MovieDetail";
 import { MoviesContext } from "../context/moviesContext";
-import { DUMMY_MOVIES_RESPONSE, DUMMY_MOVIE_DETAIL_RESPONSE } from "../data/movies";
 import { fetchMovieDetail } from "../util/http";
 export default function MovieDetailScreen({ route }) {
   const moviesCtx = useContext(MoviesContext);

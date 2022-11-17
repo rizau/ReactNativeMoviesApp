@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
-import { DUMMY_MOVIES_RESPONSE } from "../data/movies";
+
 
 export const MoviesContext = createContext({
   movies: [],
@@ -22,7 +22,6 @@ function MoviesContextProvider({ children }) {
   const addMovie = (movie) => {
     setMovies((currentMovies) => [...currentMovies, movie]);
     AsyncStorage.setItem("movies", JSON.stringify(movies));
-    console.log("ctx", movies);
   };
 
   const value = {
