@@ -13,7 +13,7 @@ export default function MovieSearchScreen({ navigation }) {
       } else {
         const movies = await DUMMY_MOVIES_RESPONSE.Search;
         setMovies(movies);
-        console.log("movies updated");
+        //console.log("movies updated");
       }
     }, 2000);
 
