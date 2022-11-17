@@ -11,7 +11,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="searchMovies" component={MovieSearchScreen} />
+        <Stack.Screen name="Movies" component={MovieSearchScreen} />
         <Stack.Screen name="movieDetail" component={MovieDetailScreen} />
       </Stack.Navigator>
       <StatusBar style="auto" />
