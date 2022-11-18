@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-export default function MovieItem({ Title, imdbID, Poster, Type, Year }) {
+export default function MovieItem({ Title, imdbID, Poster, Year }) {
   const navigation = useNavigation();
   const moviePressHandler = () => {
     navigation.navigate("movieDetail", { imdbID: imdbID });

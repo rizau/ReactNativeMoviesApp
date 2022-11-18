@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
-import { TextInput, FlatList, StyleSheet, SafeAreaView, View, ActivityIndicator, Text, RefreshControl } from "react-native";
+import { TextInput, FlatList, StyleSheet, SafeAreaView, Text, RefreshControl } from "react-native";
 import MovieItem from "../components/MovieItem";
 import { fetchMovies } from "../util/http";
-export default function MovieSearchScreen({ navigation }) {
+import LoadingFooter from "../components/LoadingFooter";
+export default function MovieSearchScreen() {
   const [searchText, setSearchText] = useState("");
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  //const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const testF = async () => {
+    const response = await fetchMovies(searchText, page);
+    const movies = response.Search ?? [];
+    return movies;
+  };
 
   useEffect(() => {
     const getMovies = setTimeout(async () => {
@@ -16,8 +23,8 @@ export default function MovieSearchScreen({ navigation }) {
       setMovies([]);
       setIsLoading(true);
       //} else {
-      setPage(1);
-      const response = await fetchMovies(searchText); //DUMMY_MOVIES_RESPONSE.Search;
+      //setPage(1);
+      const response = await fetchMovies(searchText, page);
       const movies = response.Search ?? [];
       setMovies(movies);
       setTotalResults(response.totalResults);
@@ -31,6 +38,7 @@ export default function MovieSearchScreen({ navigation }) {
 
   const searchChangeHandler = (enteredText) => {
     setSearchText(enteredText);
+    setPage(1);
   };
 
   const renderMovieItem = (itemData) => {
@@ -44,14 +52,15 @@ export default function MovieSearchScreen({ navigation }) {
     };
     return <MovieItem {...itemProps} />;
   };
-  const getMoreMovies = () => {
-    if (page < Math.ceil(totalResults / 10)) {
-      setIsLoading(true);
+  const onEndReachedHandler = () => {
+    const totalPage = Math.ceil(totalResults / 10);
+    if (page < totalPage) {
       setPage(page + 1);
     }
   };
   useEffect(() => {
-    const getMore = async () => {
+    const getMoreMovies = async () => {
+      setIsLoading(true);
       const request = await fetchMovies(searchText, page);
       const movies = request.Search ?? [];
       if (request.Response)
@@ -60,32 +69,32 @@ export default function MovieSearchScreen({ navigation }) {
           return [...prevMovies, ...movies];
         });
 
-      // setIsLoading(false);
+      setIsLoading(false);
+      setIsRefreshing(false);
     };
-    if (page <= Math.ceil(totalResults / 10)) {
-      getMore();
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    }
+    // if (page <= Math.ceil(totalResults / 10)) {
+    getMoreMovies();
+    console.log(page);
+    // setTimeout(() => {
+    // setIsLoading(false);
+    //setIsRefreshing(false);
+    //}, 1000);
+    //}
   }, [page]);
-  const loadingFooter = () => {
-    return (
-      isLoading && (
-        <View style={{ marginVertical: 100 }}>
-          <ActivityIndicator animating size="large" />
-        </View>
-      )
-    );
+
+  const refreshMoviesHandler = async () => {
+    setIsRefreshing(true);
+    setPage(1);
+    const movies = await testF();
+    setMovies(movies);
+    setIsRefreshing(false);
   };
-  const refreshMoviesHandler = () => setPage(1);
   return (
     <SafeAreaView>
-      <Text>
-        {page}-{totalResults}
-      </Text>
+      <Text>{totalResults}</Text>
       <TextInput style={styles.input} value={searchText} onChangeText={searchChangeHandler} placeholder="Search" />
-      <FlatList data={movies} keyExtractor={(item) => item.imdbID} renderItem={renderMovieItem} onEndReached={getMoreMovies} ListFooterComponent={loadingFooter} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refreshMoviesHandler} />} />
+      {/**searchText.length > 0 && !isLoading && !totalResults && <Text style={{ textAlign: "center" }}>No Movies found...</Text>*/}
+      <FlatList data={movies} keyExtractor={(item) => item.imdbID} renderItem={renderMovieItem} onEndReached={onEndReachedHandler} ListFooterComponent={<LoadingFooter isLoading={isLoading} />} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshMoviesHandler} />} />
     </SafeAreaView>
   );
 }

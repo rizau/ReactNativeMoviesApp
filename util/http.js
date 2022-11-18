@@ -11,9 +11,8 @@ export async function fetchMovies(searhText, page = 1) {
 
 export async function fetchMovieDetail(imdbID) {
   const url = `${API_URL}/?apikey=${API_KEY}&i=${imdbID}`;
-  const response = await axios.get(url);
-  const data = await response.data;
-  return data;
+  const result = await getRequest(url);
+  return result;
 }
 
 async function getRequest(url) {

@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native";
-export default function Chips({ items, direction = "row" }) {
+export default function Chips({ items=[] }) {
   return (
-    <View style={[styles.container, { flexDirection: direction }]}>
+    <View style={[styles.container, { flexDirection: "row" }]}>
       {items.map((item) => (
         <Text key={item} style={styles.text}>
           {item}
