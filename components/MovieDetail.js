@@ -11,7 +11,10 @@ export default function MovieDetail(props) {
     <ScrollView>
       <Image style={styles.img} source={{ uri: Poster != "N/A" ? Poster : null }} />
       <View style={styles.subtitleContainer}>
-        <Text style={styles.title}>{Title}</Text>
+        <Text style={styles.title}>
+          {Title} ( {Year} )
+        </Text>
+        <Chips items={genres} />
       </View>
 
       {subTitleList.map((subtitle) => (

@@ -23,6 +23,7 @@ function MoviesContextProvider({ children }) {
     AsyncStorage.setItem("movies", JSON.stringify(movies));
   };
 
+
   const value = {
     movies,
     addMovie,
